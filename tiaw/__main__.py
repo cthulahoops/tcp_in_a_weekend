@@ -47,10 +47,10 @@ def timer():
         info.end_time = time.time()
 
 
-def ping(destination):
+def ping(tun, destination):
     for i in range(5):
         # create ping packet
-        packet = icmp.add_ip_header(icmp.make_ping(seq=i))
+        packet = icmp.add_ip_header(ip.PROTO_ICMP, destination, icmp.make_ping(seq=i))
         # time how long it takes to get a reply
         with timer() as timing_info:
             tun.write(packet)
@@ -64,5 +64,7 @@ def ping(destination):
         )
 
 
-tun = open_tun("tun0")
-ping("192.0.2.1")
+if __name__ == "__main__":
+    tun = open_tun("tun0")
+    ping(tun, "192.0.2.1")
+    ping(tun, "8.8.8.8")

@@ -26,6 +26,6 @@ def make_ping(seq=1):
     return icmp_to_bytes(icmp)
 
 
-def add_ip_header(data):
-    ipv4 = ip.ipv4_create(content_length=len(data), protocol=ip.PROTO_ICMP, dest_ip="192.0.2.1")
+def add_ip_header(protocol, destination, data):
+    ipv4 = ip.ipv4_create(content_length=len(data), protocol=protocol, dest_ip=destination)
     return ip.ipv4_to_bytes(ipv4) + data

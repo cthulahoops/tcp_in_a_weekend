@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "tcp-in-a-weekend"
+version = "0.1.0"
+description = ""
+authors = ["Adam Kelly <adam@cthulahoops.org>"]
+readme = "README.md"
+packages = [{include = "tcp_in_a_weekend"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.9.1"
+ruff = "^0.0.291"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

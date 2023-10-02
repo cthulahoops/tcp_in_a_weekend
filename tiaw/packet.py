@@ -4,19 +4,26 @@ import typing
 
 
 class Byte(int):
-    packing = "B"
+    pass
 
 
 class Int2(int):
-    packing = "H"
+    pass
 
 
 class IpAddress(bytes):
-    packing = "4s"
+    pass
+
+
+FIELD_TYPES = {
+    Byte: "B",
+    Int2: "H",
+    IpAddress: "4s",
+}
 
 
 def packing_format(cls):
-    return "!" + "".join(field.packing for field in typing.get_type_hints(cls).values())
+    return "!" + "".join(FIELD_TYPES[field] for field in typing.get_type_hints(cls).values())
 
 
 def encode(data):

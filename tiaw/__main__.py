@@ -32,6 +32,7 @@ class TimingInfo:
     start_time: float
     end_time: float
 
+    @property
     def elapsed_time(self):
         return self.end_time - self.start_time
 
@@ -64,4 +65,4 @@ def ping(destination):
 
 
 tun = open_tun("tun0")
-ping("192.0.2.2")
+ping("192.0.2.1")

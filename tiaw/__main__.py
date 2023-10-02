@@ -3,6 +3,7 @@ from fcntl import ioctl
 from select import select
 from . import icmp
 from . import ip
+from . import udp
 import time
 from contextlib import contextmanager
 from dataclasses import dataclass
@@ -64,7 +65,26 @@ def ping(tun, destination):
         )
 
 
+def dns(tun):
+    query = b"D\xcb\x01\x00\x00\x01\x00\x00\x00\x00\x00\x00\x07example\x03com\x00\x00\x01\x00\x01"
+    udp_packet = udp.udp_create("8.8.8.8", 12345, 53, query)
+
+    print(udp_packet.hex())
+
+    print(udp.udp_from_bytes(udp_packet[20:]))
+
+    tun.write(udp_packet)
+    response = read_with_timeout(tun, 1024)
+
+    ip.ipv4_from_bytes(response[:20])
+    udp_response, contents = udp.udp_from_bytes(response[20:])
+
+    print(udp_response)
+    print(list(contents[-4:]))
+
+
 if __name__ == "__main__":
     tun = open_tun("tun0")
-    ping(tun, "192.0.2.1")
-    ping(tun, "8.8.8.8")
+    dns(tun)
+    # ping(tun, "192.0.2.1")
+    # ping(tun, "8.8.8.8")
